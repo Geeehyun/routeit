@@ -17,10 +17,4 @@ spring:
       hibernate:
         format_sql: true
 
-logging:
-  level:
-    root: INFO
-    com.routeit: DEBUG
-  file:
-    name: logs/routeit.log
 
