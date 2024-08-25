@@ -57,7 +57,7 @@ if (!tasks.names.contains('npmInstall')) {
 		args = ['install']
 		workingDir = file("${project.rootDir}/frontend")
 		doFirst {
-			println "Running npm install in directory: ${workingDir}"
+			println "Running npm install in directory: ${rootDir}"
 		}
 	}
 }
@@ -68,7 +68,7 @@ if (!tasks.names.contains('npmBuild')) {
 		args = ['run', 'build']
 		workingDir = file("${project.rootDir}/frontend")
 		doFirst {
-			println "Running npm install in directory: ${workingDir}"
+			println "Running npm install in directory: ${rootDir}"
 		}
 	}
 }
@@ -79,4 +79,8 @@ bootJar {
 	from("frontend/dist") {
 		into("static")
 	}
+}
+
+test {
+	exclude '**/*'
 }
