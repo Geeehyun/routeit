@@ -44,31 +44,29 @@ tasks.named('test') {
 }
 
 node {
-//	version = '20.17.0' // Node.js 버전
-//	npmVersion = '10.8.2' // npm 버전
 	version = '16.14.2' // Node.js LTS 버전
 	npmVersion = '6.14.15' // 안정적인 npm 버전
-	download = true
+	download = true	// 빌드할 때 node 다운로드 진행
 }
 
 
-if (!tasks.names.contains('npmInstall')) {
+if (!tasks.names.contains('npmInstall')) {	// 없을 떄만 진행
 	task npmInstall(type: NpmTask) {
 		args = ['install']
-		workingDir = file("${project.rootDir}/frontend")
+		workingDir = file("${project.rootDir}/frontend")	// 중요 : npm install 진행할 때 프로젝트 루트 하위 frontend 디렉토리 하위 package.json 참고하도록 경로 설정
 		doFirst {
-			println "Running npm install in directory: ${rootDir}"
+			println "Running npm install in directory: ${rootDir}"	// 참조중인 디렉토리 로그 표시
 		}
 	}
 }
 
-if (!tasks.names.contains('npmBuild')) {
+if (!tasks.names.contains('npmBuild')) {	// 없을 떄만 진행
 	task npmBuild(type: NpmTask) {
 		dependsOn npmInstall
 		args = ['run', 'build']
-		workingDir = file("${project.rootDir}/frontend")
+		workingDir = file("${project.rootDir}/frontend")	// 중요 : npm build 진행할 때 프로젝트 루트 하위 frontend 디렉토리 하위 node_modules 참고하도록 경로 설정
 		doFirst {
-			println "Running npm install in directory: ${rootDir}"
+			println "Running npm install in directory: ${rootDir}"	// 참조중인 디렉토리 로그 표시
 		}
 	}
 }
@@ -82,5 +80,5 @@ bootJar {
 }
 
 test {
-	exclude '**/*'
+	exclude '**/*'	// build 시 test 진행안함
 }

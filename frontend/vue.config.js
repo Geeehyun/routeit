@@ -1,6 +1,6 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
-  outputDir: "../backend/src/main/resources/static", //빌드 타멧 디렉토리
+  outputDir: "../backend/src/main/resources/static", //빌드 타겟 디렉토리
   devServer: {
     port: 8081,
     proxy: {
