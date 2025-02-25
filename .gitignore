@@ -38,3 +38,6 @@ out/
 
 ### log ###
 backend/logs/*
+
+# Vue
+/backend/src/main/resources/static/**/**

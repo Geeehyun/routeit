@@ -4,12 +4,13 @@ module.exports = defineConfig({
   devServer: {
     port: 8081,
     proxy: {
-      '/example': {
+      '/api': {
         // '/api' 로 들어오면 port 8080 스프링 서버로 이동
         target: 'http://localhost:8080',
         changeOrigin: true // crossOrigin 허용
       }
     }
   },
-  transpileDependencies: true
+  transpileDependencies: true,
+  lintOnSave: false,
 })

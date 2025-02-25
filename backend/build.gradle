@@ -26,8 +26,8 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -71,13 +71,33 @@ if (!tasks.names.contains('npmBuild')) {	// 없을 떄만 진행
 	}
 }
 
-
 bootJar {
 	dependsOn npmBuild
 	from("frontend/dist") {
 		into("static")
 	}
 }
+
+// 스프링 톰캣 실행시 vue 자동 배포되도록 설정
+task buildFrontend(type: Exec) {
+	dependsOn clean  // Gradle clean task 의존
+	workingDir '../frontend'
+
+	if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+		commandLine 'cmd', '/c', 'npm run build'
+	} else {
+		commandLine 'npm', 'run', 'build'
+	}
+}
+
+task copyFrontendBuild(type: Copy) {
+	dependsOn buildFrontend
+	from '../frontend/dist'  // Vue 빌드 결과 폴더
+	into 'src/main/resources/static'  // Spring Boot 정적 리소스로 복사
+}
+
+bootRun.dependsOn copyFrontendBuild  // bootRun 실행 전에 Vue 빌드 실행
+
 
 test {
 	exclude '**/*'	// build 시 test 진행안함
